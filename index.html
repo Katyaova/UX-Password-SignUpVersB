@@ -6,6 +6,53 @@
     <title> Password Sign Up Page</title>
     <link rel="stylesheet" href="style.css" />
 </head>
+<body>
+    <main class="phone-screen">
+        <section class="form-card">
+        <h1>Create Account</h1>
+
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Enter Password" />
+
+        <div class= "strength-box"></div>
+        <p id="strenghtText">Password Strenght: None</p>
+        <div class="meter">
+            <div id="meterfil"></div>
+        </div>
+        <p id="feedback"></p>
+        </div>
+
+        <div class="requirements">
+            <p id="lengthReq">At Least 8 characters </p>
+            <p id="caseReq">Includes uppercase & lowercase</p>
+            <p id="numberReq">Includes a number </p>
+            <p id="symbolReq">Includes a symbol </p>
+        </div>
+
+        <button id="continueBtn">Continue</button>
+    </div>
+
+    <div id="warningModal" class="modal hidden">
+        <div class="modal-content">
+            <H2>This password may be easy to guess</H2>
+            <p>
+                We noticed predictable elements in your password e.g. names, common
+                number patterns.</p>
+                <p>
+
+                These patterns are often targated in automated attacks</p>
+                <p>
+                Would you like to improve you password security?</p>
+
+                <button id="improveBtn">Improve password </button>
+                <button id="useAnywayBtn" class="secondary">Use password anyway</button>
+            
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
     
 
