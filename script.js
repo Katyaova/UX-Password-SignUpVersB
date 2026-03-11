@@ -49,4 +49,27 @@ function checkPasswordStrength(password, username) {
         warning.push("Contains a common sequence");
     }
 
+    //zxcvbn
+
+    const result = zxcvbn = "Weak";
+    let meterWidth = "20%";
+
+    if (scores === 0) {
+        strengthLabel = "Very Weak";
+        meterWidth = "20%";
+    } else if (scores === 1) {
+        strengthLabel = "Weak";
+        meterWidth = "40%";
+    } else if (scores === 2) {
+        strengthLabel = "Fair";
+        meterWidth = "60%";
+    } else if (scores === 3) {
+        strengthLabel = "Good";
+        meterWidth = "80%";
+    } else if (scores === 4) {
+        strengthLabel = "Strong";
+        meterWidth = "100%";
+    }
+    
+
 }
