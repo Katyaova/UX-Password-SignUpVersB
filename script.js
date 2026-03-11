@@ -21,10 +21,16 @@ function checkPasswordStrength(password, username) {
     const hasNumber = /[0-9]/.test(password);
     const hasSymbol = /[^A-Za-z0-9]/.test(password);
 
-    lengthReq.textContent = `${hasLength ? "✔" : "✖"} At least 8 characters`;
-    caseReq.textContent = `${hasCase ? "✔" : "✖"} Includes uppercase & lowercase`;
-    numberReq.textContent = `${hasNumber ? "✔" : "✖"} Includes a number`;
-    symbolReq.textContent = `${hasSymbol ? "✔" : "✖"} Includes a symbol`;
+    lengthReq.textContent = `${hasLength ? "✔" : "☐"} At least 8 characters`;
+    caseReq.textContent = `${hasCase ? "✔" : "☐"} Includes uppercase & lowercase`;
+    numberReq.textContent = `${hasNumber ? "✔" : "☐"} Includes a number`;
+    symbolReq.textContent = `${hasSymbol ? "✔" : "☐"} Includes a symbol`;
+
+    lengthReq.style.color = hasLength ? "#2ecc71" : "#333"
+    caseReq.style.color = hasCase ? "#2ecc71" : "#333"
+    numberReq.style.color = hasNumber ? "#2ecc71" : "#333"
+    symbolReq.style.color = hasSymbol ? "#2ecc71" : "#333"
+
 
     const lowerPassword = password.toLowerCase();
     const lowerUsername = username.toLowerCase();
