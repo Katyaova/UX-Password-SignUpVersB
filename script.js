@@ -16,7 +16,7 @@ const improveBtn = document.getElementById("improveBtn");
 const useAnywayBtn = document.getElementById("useAnywayBtn");
 
 function checkPasswordStrength(password, username) {
-    let score = 0;
+ 
     let warning = [];
 
     const hasLength = password.length >=8;
@@ -29,10 +29,7 @@ function checkPasswordStrength(password, username) {
     numberReq.textContent = `${hasNumber ? "✔" : "✖"} Includes a number`;
     symbolReq.textContent = `${hasSymbol ? "✔" : "✖"} Includes a symbol`;
 
-    if (hasLength) score++;
-    if (hasCase) score++;
-    if (hasNumber) score++;
-    if (hasSymbol) score++;
+
 
     const lowerPassword = password.toLowerCase();
     const lowerUsername = username.toLowerCase();
@@ -51,25 +48,73 @@ function checkPasswordStrength(password, username) {
 
     //zxcvbn
 
-    const result = zxcvbn = "Weak";
-    let meterWidth = "20%";
+    const result = zxcvbn(password, [username]);
+    const score = result.score;
+    const crackTime = result.crack_times_display.offline_slow_hashing_1e4_per_second;
 
-    if (scores === 0) {
+    let strengthLabel = "Very Weak";
+    let meterWidth = "20%";
+    let meterColor = "#ff4d4d"; 
+
+    if (score === 0) {
         strengthLabel = "Very Weak";
         meterWidth = "20%";
+        meterColor = "#ff4d4d";
+
     } else if (scores === 1) {
         strengthLabel = "Weak";
         meterWidth = "40%";
+        meterColor = "#ff944d";
+
     } else if (scores === 2) {
         strengthLabel = "Fair";
         meterWidth = "60%";
+        meterColor = "#ffd633";
+
     } else if (scores === 3) {
         strengthLabel = "Good";
         meterWidth = "80%";
+        meterColor = "#9be564";
+
     } else if (scores === 4) {
         strengthLabel = "Strong";
         meterWidth = "100%";
+        meterColor = "#33cc66";
     }
-    
 
+    meterfill.stylewidth = meterWidth;
+    meterfill.style.backgroundColor = meterColor;
+    strengthText.textContent = `Password Strength: ${strengthLabel}`;
+    feedback.textContent = `Estimated crack time: ${crackTime}`;
+
+    return {
+        score, crackTime, warning };
 }
+
+passwordInput.addEventListener("input", function () {
+    checkPasswordStrength(passwordInput.ariaValueMax, usernameInput.value);
+});
+
+usernameInput.addEventListener("input", function (){
+    checkPasswordStrength(passwordInput.ariaValueMax, usernameInput.value);
+});
+
+continueBtn.addEventListener("click", function () {
+    const result = checkPasswordStrength(passwordInput.value, usernameInput.value);
+onst
+    if (result.warning.length > 0) {
+        warningModal.classList.remove("hidden");
+    } else {
+        alert("Account created successfully.");
+    }
+});
+
+improveBtn.addEventListener("click", function (){
+    warningModal.classList.add("hidden");
+    passwordInput.focus();
+});
+
+useAnywayBtn.addEventListener("click", function (){
+    warningModal.classList.add("hidden");
+    alert("Account created with current password");
+});
