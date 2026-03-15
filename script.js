@@ -19,7 +19,7 @@ let startTime = Date.now();
 let changedAfterWarning = 0;
 
 function submitToGoogleForm(data) {
-    fetch("https://docs.google.com/forms/d/e/1FAIpQLSfr-y6MgdElZvriGAItiNnl81od5YTGVWlPmrgWzLcbeALeAg/viewform?usp=dialog", {
+    fetch("https://docs.google.com/forms/d/e/12VNXHtxc57zXDEUC0G0CwAb5Ir1VQcjXCSqhtYQs4W0/formResponse", {
      method: "POST",
      mode: "no-cors",
      headers: {
