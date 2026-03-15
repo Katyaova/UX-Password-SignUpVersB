@@ -15,26 +15,6 @@ const warningModal = document.getElementById("warningModal");
 const improveBtn = document.getElementById("improveBtn");
 const useAnywayBtn = document.getElementById("useAnywayBtn");
 
-function generateParticipantID() {
-    let usedIDs = JSON.parse(localStorage.getItem("usedParticipantIDs")) || [];
-
-    if (usedIDs.length >= 100) {
-        alert("Maximum participants reached");
-        return null;
-    }
-
-    let newID;
-
-    do {
-        newID - Math.floor(Math.random() * 100) + 1;
-    } while (usedIDs.includes(newID));
-
-    usedIDs.push(newID);
-    localStorage.setItem("usedParticipantIDs" , JSON.stringify(usedIDs));
-
-    return newID;
-}
-
 let startTime = Date.now();
 let changedAfterWarning = 0;
 
@@ -196,7 +176,7 @@ continueBtn.addEventListener("click", function () {
        const timeTaken = Math.round((Date.now() - startTime) / 1000);
 
        submitToGoogleForm({
-        participantID: generateParticipantID(),
+        participantID: username,
         passwordLength: password.length,
         score: result.score,
         crackTime: crackTime,
