@@ -15,7 +15,21 @@ const warningModal = document.getElementById("warningModal");
 const improveBtn = document.getElementById("improveBtn");
 const useAnywayBtn = document.getElementById("useAnywayBtn");
 
+function meetsMinimumRequirement(password){
+    const hasLength = password.length >= 8;
+    const hasCase = /[A-Z]/.test(password) && /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[^A-Za-z0-9]/.test(password);
+
+    return hasLength && hasCase && hasNumber && hasSymbol;
+}
+
 function checkPasswordStrength(password, username) {
+    lengthReq.classList.remove("requirement-error");
+    caseReq.classList.remove("requirement-error");
+    numberReq.classList.remove("requirement-error");
+    symbolReq.classList.remove("requirement-error")
+
     const hasLength = password.length >= 8;
     const hasCase = /[A-Z]/.test(password) && /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
@@ -103,12 +117,30 @@ usernameInput.addEventListener("input", function () {
 });
 
 continueBtn.addEventListener("click", function () {
-    const result = checkPasswordStrength(passwordInput.value, usernameInput.value);
+    const password = passwordInput.value;
+    const username = usernameInput.value;
 
-    if (result.warnings.length > 0) {
+    const result = checkPasswordStrength(password, username);
+
+    const hasLength = password.length >= 8;
+    const hasCase = /[A-Z]/.test(password) && /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[^A-Za-z0-9]/.test(password);
+
+    if (!hasLength) lengthReq.classList.add("requirement-error");
+    if (!hasCase) caseReq.classList.add("requirement-error");
+    if (!hasNumber) numberReq.classList.add("requirement-error");
+    if (!hasSymbol) symbolReq.classList.add("requirement-error");
+
+    if (!(hasLength && hasCase && hasNumber && hasSymbol)) {
+        passwordInput.focus();
+        return;
+    }
+
+    if (result.warnings.length > 0 ) {
         warningModal.classList.remove("hidden");
     } else {
-        alert("Account created successfully.");
+        alert ("Account created successfully")
     }
 });
 
