@@ -19,22 +19,22 @@ let startTime = Date.now();
 let changedAfterWarning = 0;
 
 function submitToGoogleForm(data) {
-    fetch("https://docs.google.com/forms/d/e/12VNXHtxc57zXDEUC0G0CwAb5Ir1VQcjXCSqhtYQs4W0/formResponse", {
+    fetch("https://docs.google.com/forms/d/e/1FAIpQLSfr-y6MgdElZvriGAItiNnl81od5YTGVWlPmrgWzLcbeALeAg/formResponse", {
      method: "POST",
      mode: "no-cors",
      headers: {
         "Content-Type": "application/x-www-form-urlencoded"
      },
-     body: newURLSearchParams({
-        "entry.111": data.ParticipantID,
-        "entry.222": data.passwordLength,
-        "entry.333": data.score,
-        "entry.444": data.crackTime,
-        "entry.555": data.patternName,
-        "entry.666": data.patternYear,
-        "entry.777": data.patterSequence,
-        "entry.888": data.timeTaken,
-        "entry.999": data.changedAfterWarning
+     body: new URLSearchParams({
+        "entry.161060327": data.participantID,
+        "entry.1438199554": data.passwordLength,
+        "entry.464529303": data.score,
+        "entry.1447548718": data.crackTime,
+        "entry.502609337": data.patternName,
+        "entry.1452141178": data.patternYear,
+        "entry.2089278448": data.patternSequence,
+        "entry.1017828981": data.timeTaken,
+        "entry.783176864": data.changedAfterWarning
      })
     });
     }
@@ -143,7 +143,7 @@ usernameInput.addEventListener("input", function () {
 
 continueBtn.addEventListener("click", function () {
     const password = passwordInput.value;
-    const username = usernameInput.value;
+    const username = usernameInput.value.trim();
 
     const result = checkPasswordStrength(password, username);
 
@@ -157,10 +157,14 @@ continueBtn.addEventListener("click", function () {
     if (!hasNumber) numberReq.classList.add("requirement-error");
     if (!hasSymbol) symbolReq.classList.add("requirement-error");
 
+    if (!username) {
+        usernameInput.focus();
+        return;
+    } 
     if (!(hasLength && hasCase && hasNumber && hasSymbol)) {
         passwordInput.focus();
         return;
-    }
+        }
 
     if (result.warnings.length > 0 ) {
         warningModal.classList.remove("hidden");
@@ -172,7 +176,7 @@ continueBtn.addEventListener("click", function () {
        const patternYear = /(19\d{2}|20\d{2})/.test(password) ? 1 : 0;
        const patternSequence = /(123|1234|abc|qwerty)/i.test(password) ? 1 : 0;
 
-       const crackTime = zxcvbn(password [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
+       const crackTime = zxcvbn(password, [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
        const timeTaken = Math.round((Date.now() - startTime) / 1000);
 
        submitToGoogleForm({
@@ -182,10 +186,10 @@ continueBtn.addEventListener("click", function () {
         crackTime: crackTime,
         patternName : patternName,
         patternYear : patternYear,
-        patterSequence : patternSequence,
+        patternSequence : patternSequence,
         timeTaken: timeTaken,
-        changedAfterWarning: changedAfterWarning
-       })
+        changedAfterWarning: changedAfterWarning ? "yes" : "no"
+       });
 
        alert("Account Created Successfully!")
        }
@@ -198,6 +202,32 @@ improveBtn.addEventListener("click", function () {
 });
 
 useAnywayBtn.addEventListener("click", function () {
+    const password = passwordInput.value;
+    const username = usernameInput.value.trim();
+    const result = checkPasswordStrength(password, username);
+
+    const lowerPassword = password.toLowerCase();
+    const lowerUsername = username.toLowerCase();
+
+    const patternName = lowerUsername && lowerPassword.includes(lowerUsername) ? 1 : 0;
+    const patternYear = /(19\d{2}|20\d{2})/.test(password) ? 1 : 0;
+    const patternSequence = /(123|1234|abc|qwerty)/i.test(password) ? 1 : 0;
+
+    const crackTime = zxcvbn(password, [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
+    const timeTaken = Math.round((Date.now() - startTime) / 1000);
+
+    submitToGoogleForm({
+        participantID: username,
+        passwordLength: password.length,
+        score: result.score,
+        crackTime: crackTime,
+        patternName: patternName,
+        patternYear: patternYear,
+        patternSequence: patternSequence,
+        timeTaken: timeTaken,
+        changedAfterWarning: changedAfterWarning ? "yes" : "no"
+    });
+
     warningModal.classList.add("hidden");
     alert("Account created with current password.");
 });
