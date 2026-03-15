@@ -15,6 +15,51 @@ const warningModal = document.getElementById("warningModal");
 const improveBtn = document.getElementById("improveBtn");
 const useAnywayBtn = document.getElementById("useAnywayBtn");
 
+function generateParticipantID() {
+    let usedIDs = JSON.parse(localStorage.getItem("usedParticipantIDs")) || [];
+
+    if (usedIDs.length >= 100) {
+        alert("Maximum participants reached");
+        return null;
+    }
+
+    let newID;
+
+    do {
+        newID - Math.floor(Math.random() * 100) + 1;
+    } while (usedIDs.includes(newID));
+
+    usedIDs.push(newID);
+    localStorage.setItem("usedParticipantIDs" , JSON.stringify(usedIDs));
+
+    return newID;
+}
+
+let startTime = Date.now();
+let changedAfterWarning = 0;
+
+function submitToGoogleForm(data) {
+    fetch("https://docs.google.com/forms/d/e/1FAIpQLSfr-y6MgdElZvriGAItiNnl81od5YTGVWlPmrgWzLcbeALeAg/viewform?usp=dialog", {
+     method: "POST",
+     mode: "no-cors",
+     headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+     },
+     body: newURLSearchParams({
+        "entry.111": data.ParticipantID,
+        "entry.222": data.passwordLength,
+        "entry.333": data.score,
+        "entry.444": data.crackTime,
+        "entry.555": data.patternName,
+        "entry.666": data.patternYear,
+        "entry.777": data.patterSequence,
+        "entry.888": data.timeTaken,
+        "entry.999": data.changedAfterWarning
+     })
+    });
+    }
+
+
 function meetsMinimumRequirement(password){
     const hasLength = password.length >= 8;
     const hasCase = /[A-Z]/.test(password) && /[a-z]/.test(password);
@@ -100,7 +145,7 @@ function checkPasswordStrength(password, username) {
     meterFill.style.backgroundColor = meterColor;
 
     if (warnings.length > 0) {
-        feedback.textContent = `Estimated crack time: ${crackTime} • ${warnings.join(", ")}`;
+        feedback.textContent = `Estimated crack time: ${crackTime}`;
     } else {
         feedback.textContent = `Estimated crack time: ${crackTime}`;
     }
@@ -140,11 +185,34 @@ continueBtn.addEventListener("click", function () {
     if (result.warnings.length > 0 ) {
         warningModal.classList.remove("hidden");
     } else {
-        alert ("Account created successfully")
-    }
+        const lowerPassword = password.toLowerCase();
+        const lowerUsername = username.toLowerCase();
+
+       const patternName = lowerUsername && lowerPassword.includes(lowerUsername) ? 1 : 0;
+       const patternYear = /(19\d{2}|20\d{2})/.test(password) ? 1 : 0;
+       const patternSequence = /(123|1234|abc|qwerty)/i.test(password) ? 1 : 0;
+
+       const crackTime = zxcvbn(password [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
+       const timeTaken = Math.round((Date.now() - startTime) / 1000);
+
+       submitToGoogleForm({
+        participantID: generateParticipantID(),
+        passwordLength: password.length,
+        score: result.score,
+        crackTime: crackTime,
+        patternName : patternName,
+        patternYear : patternYear,
+        patterSequence : patternSequence,
+        timeTaken: timeTaken,
+        changedAfterWarning: changedAfterWarning
+       })
+
+       alert("Account Created Successfully!")
+       }
 });
 
 improveBtn.addEventListener("click", function () {
+    changedAfterWarning = 1;
     warningModal.classList.add("hidden");
     passwordInput.focus();
 });
