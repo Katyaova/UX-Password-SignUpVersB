@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +60,7 @@ button {
 button.secondary {
   background: transparent;
   color: #2563eb;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 .modal {
@@ -104,13 +104,20 @@ button.secondary {
 .modal-content #improveBtn {
   background: #57a7f3;
   color: white;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 .modal-content .secondary {
   background: transparent;
-  color: #8a8a8a;
-  font-weight: 500;
+  color: #4b4b4b;
+  font-weight: 530;
+  opacity: 1;
 }
+.modal-content .secondary:focus,
+.modal-content .secondary:active {
+  color: #333;
+  opacity: 1;
+}
+
 .modal-content .secondary:hover {
   color: #575757;
   font-weight: 500;
@@ -157,7 +164,7 @@ button.secondary {
 
 .screen {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -166,11 +173,11 @@ button.secondary {
 
 .card {
   width: 100%;
-  max-width: 100vh;
+  max-width: 380px;
   background: #f7f7f7;
   border-radius: 28px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  padding: 24px 18px 20px;
+  padding: 20px 18px 18px;
 }
 .lock-icon {
   width: 64px;
@@ -218,12 +225,14 @@ button.secondary {
 .modal-content h2 {
   max-width: 260px;
   margin: 12px auto 16px;
+  font-size: 22px;
+  line-height: 1;
 }
 .modal-text {
-  font-size: 14px;
-  line-height: 1.35;
-  color: #222;
-  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #333;
+  margin-bottom: 12px;
   text-align: center;
 }
 .modal-question {
