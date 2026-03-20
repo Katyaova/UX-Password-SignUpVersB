@@ -80,7 +80,7 @@ function checkPasswordStrength(password, username) {
         warnings.push("Contains name or username");
     }
 
-    if (/(19\d{2}|20\d{2})/.test(password)) {
+    if (/(18\d{2}|19\d{2}|20\d{2})/.test(password)) {
         warnings.push("Contains a year");
     }
 
@@ -173,7 +173,7 @@ continueBtn.addEventListener("click", function () {
         const lowerUsername = username.toLowerCase();
 
        const patternName = lowerUsername && lowerPassword.includes(lowerUsername) ? 1 : 0;
-       const patternYear = /(19\d{2}|20\d{2})/.test(password) ? 1 : 0;
+       const patternYear = /(18\d{2}|19\d{2}|20\d{2})/.test(password) ? 1 : 0;
        const patternSequence = /(123|1234|abc|qwerty)/i.test(password) ? 1 : 0;
 
        const crackTime = zxcvbn(password, [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
@@ -210,7 +210,7 @@ useAnywayBtn.addEventListener("click", function () {
     const lowerUsername = username.toLowerCase();
 
     const patternName = lowerUsername && lowerPassword.includes(lowerUsername) ? 1 : 0;
-    const patternYear = /(19\d{2}|20\d{2})/.test(password) ? 1 : 0;
+    const patternYear = /(18\d{2}|19\d{2}|20\d{2})/.test(password) ? 1 : 0;
     const patternSequence = /(123|1234|abc|qwerty)/i.test(password) ? 1 : 0;
 
     const crackTime = zxcvbn(password, [username]).crack_times_display.offline_slow_hashing_1e4_per_second;
