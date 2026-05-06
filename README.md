@@ -4,7 +4,7 @@
 This project investigates how UX design influences cybersecurity behaviour.
 
 ## Project Poster
-![Poster](poster.png)
+![Poster](FYP%20Poster%20(1).png)
 
 ## Features
 - Password strength meter
